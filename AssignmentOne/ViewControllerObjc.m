@@ -8,24 +8,38 @@
 #import "ViewControllerObjc.h"
 
 @interface ViewControllerObjc ()
-
+@property (strong, nonatomic) NSNumber * correctNumb;
 @end
 
 @implementation ViewControllerObjc
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view.
+    
+    // Ensure the tableView is properly connected and recognized
+    self.tableView.delegate = self;
+    self.tableView.dataSource = self;
+    self.title = @"Favorite"; 
+    // Register the UITableViewCell class for the cell reuse identifier
+    [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"cell"];
 }
 
-/*
-#pragma mark - Navigation
 
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+
+// Implement the UITableViewDataSource methods
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+    return 1;
 }
-*/
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    return 3; // Example: 10 rows
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"cell"];
+    cell.textLabel.text = @"hellow world";
+    
+    return cell;
+}
 
 @end

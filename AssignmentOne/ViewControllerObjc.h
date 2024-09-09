@@ -9,7 +9,11 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface ViewControllerObjc : UIViewController
+@interface ViewControllerObjc : UIViewController <UITableViewDelegate, UITableViewDataSource>
+@property (weak, nonatomic) IBOutlet UITableView *tableView ;
+
+
+
 
 @end
 

@@ -7,8 +7,17 @@
 
 
 import Foundation
+// Protocol for handling weather response and errors
+protocol NetworkServiceDelegate: AnyObject {
+    func didGetWeatherResponse(_ weatherResponse: WeatherResponse)
+    func didFailWithError(_ error: Error)
+}
 
 class NetworkService {
+    
+    // The delegate that will be notified about the result of the network call
+    weak var delegate: NetworkServiceDelegate?
+    
     // Singleton instance for ease of use across the app
     static let shared = NetworkService()
     
@@ -44,15 +53,26 @@ class NetworkService {
     }
     
     // Function to fetch weather data for a specific city
-    func fetchWeatherData(forCity city: String, completion: @escaping (Result<WeatherResponse, Error>) -> Void) {
+    func fetchWeatherData(forCity city: String) {
         // Construct the URL with query parameters
         guard let url = URL(string: "\(baseURL)?q=\(city)&appid=\(apiKey)") else {
             let error = NSError(domain: "com.example.app", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid URL"])
-            completion(.failure(error))
+            delegate?.didFailWithError(error)
             return
         }
         
         // Call the generic fetch function with the constructed URL
-        fetchData(url: url, completion: completion)
+        fetchData(url: url) { [weak self] (result: Result<WeatherResponse, Error>) in
+            switch result {
+            case .success(let weatherResponse):
+                // Notify the delegate when data is successfully received
+                self?.delegate?.didGetWeatherResponse(weatherResponse)
+            case .failure(let error):
+                // Notify the delegate about the failure
+                self?.delegate?.didFailWithError(error)
+            }
+        }
     }
 }
+
+
