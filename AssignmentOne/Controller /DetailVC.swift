@@ -21,12 +21,18 @@ class DetailVC: UIViewController {
         super.viewDidLoad()
         
         test.text = lableName
-        
+        NetworkService.shared.fetchWeatherData(forCity: lableName)
     }
+    
+    
+    
     
 
  
 }
+
+
+
 
 
 

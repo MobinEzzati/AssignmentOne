@@ -57,11 +57,11 @@
             <objects>
                 <viewController storyboardIdentifier="DetailVc" title="Detail Page" id="WCE-Be-Z3B" customClass="DetailVC" customModule="AssignmentOne" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="bw2-AN-ub0">
-                        <rect key="frame" x="0.0" y="0.0" width="390" height="844"/>
+                        <rect key="frame" x="0.0" y="0.0" width="390" height="834"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="sdfdfdfdf" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="b50-4n-A7f">
-                                <rect key="frame" x="65" y="319" width="245" height="20.666666666666686"/>
+                                <rect key="frame" x="65" y="163.33333333333334" width="245" height="20.666666666666657"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -72,7 +72,6 @@
                         <constraints>
                             <constraint firstItem="b50-4n-A7f" firstAttribute="leading" secondItem="KJs-nF-qbC" secondAttribute="leading" constant="65" id="BEA-Gi-vID"/>
                             <constraint firstItem="KJs-nF-qbC" firstAttribute="trailing" secondItem="b50-4n-A7f" secondAttribute="trailing" constant="80" id="Om2-B4-QwE"/>
-                            <constraint firstItem="b50-4n-A7f" firstAttribute="top" secondItem="KJs-nF-qbC" secondAttribute="top" constant="228" id="civ-Lm-jJB"/>
                             <constraint firstItem="KJs-nF-qbC" firstAttribute="bottom" secondItem="b50-4n-A7f" secondAttribute="bottom" constant="650" id="gJx-Lh-cKH"/>
                         </constraints>
                     </view>
@@ -229,7 +228,7 @@
                         <outlet property="CitiesCollectionView" destination="BQt-dR-Icx" id="OTe-GR-5jW"/>
                         <outlet property="citiesCollectionView" destination="BQt-dR-Icx" id="5a2-c0-tpj"/>
                         <outlet property="searchCity" destination="Kh5-Fi-BnV" id="nty-1e-TJO"/>
-                        <segue destination="WCE-Be-Z3B" kind="show" identifier="goToDetailPage" id="Ud2-Od-Th1"/>
+                        <segue destination="WCE-Be-Z3B" kind="modal" identifier="goToDetailPage" id="Ud2-Od-Th1"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="OoV-Gy-FhP" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>

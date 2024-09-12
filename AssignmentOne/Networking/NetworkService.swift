@@ -73,6 +73,13 @@ class NetworkService {
             }
         }
     }
+    
+    
+    func fetchDetails() {
+        
+        
+        
+    }
 }
 
 

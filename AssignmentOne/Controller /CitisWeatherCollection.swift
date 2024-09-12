@@ -16,9 +16,10 @@ class CitisWeatherCollection: UIViewController {
     @IBOutlet weak var citiesCollectionView: UICollectionView!
     var selectedItem = ""
     
-    // Sample data source
-    var items = ["New York", "Los Angeles", "Chicago", "Houston", "Phoenix","New York", "Los Angeles", "Chicago", "Houston", "Phoenix"]
-    var filteredItems: [String] = []
+
+    var cities :[WeatherResponse] = []
+  
+    var filteredItems: [WeatherResponse] = []
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -29,7 +30,7 @@ class CitisWeatherCollection: UIViewController {
 
     func initalSetup() {
         // Initialize filtered items
-        filteredItems = items
+        filteredItems = cities
         
 
 
@@ -67,8 +68,8 @@ class CitisWeatherCollection: UIViewController {
         
         let deleteAction = UIAlertAction(title: "Delete", style: .destructive) { [weak self] _ in
             // Remove the item from the data source
-            self?.items.remove(at: indexPath.item)
-            self?.filteredItems = self?.items ?? []
+            self?.cities.remove(at: indexPath.item)
+            self?.filteredItems = self?.cities ?? []
             
             // Delete the item from the collection view
             self?.citiesCollectionView.deleteItems(at: [indexPath])
@@ -91,8 +92,7 @@ class CitisWeatherCollection: UIViewController {
           }
           let addAction = UIAlertAction(title: "Add", style: .default) { _ in
               if let cityName = alert.textFields?.first?.text, !cityName.isEmpty {
-                  self.items.append(cityName)
-                  self.filteredItems = self.items
+                  self.filteredItems = self.cities
                   self.citiesCollectionView.reloadData()
               }
           }
@@ -128,14 +128,6 @@ class CitisWeatherCollection: UIViewController {
 
     }
     
-    
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "goToDetailPage" {
-            if let detailVc = segue.destination as? DetailVC {
-                detailVc.lableName = selectedItem // Pass the selected item to DetailVC
-            }
-        }
-    }
 }
 
 // MARK: - UISearchBarDelegate Extension
@@ -143,17 +135,17 @@ extension CitisWeatherCollection: UISearchBarDelegate {
 
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         if searchText.isEmpty {
-            filteredItems = items
+            filteredItems = cities
         } else {
             
-            filteredItems = items.filter { $0.lowercased().contains(searchText.lowercased()) }
+            filteredItems = cities.filter { $0.name.lowercased().contains(searchText.lowercased()) }
         }
         citiesCollectionView.reloadData()
     }
 
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         searchBar.text = ""
-        filteredItems = items
+        filteredItems = cities
         citiesCollectionView.reloadData()
     }
 }
@@ -162,7 +154,7 @@ extension CitisWeatherCollection: UISearchBarDelegate {
 extension CitisWeatherCollection: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return filteredItems.count
+        return cities.count
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -170,9 +162,9 @@ extension CitisWeatherCollection: UICollectionViewDelegate, UICollectionViewData
         cell.backgroundColor = .gray  // Customize your cell
         cell.layer.borderWidth = 1
         cell.layer.cornerRadius = 23
-        cell.Temp.text = "28"
-        cell.weatherCondition.text = "Sunny"  // Placeholder text
-        cell.CityName.text = filteredItems[indexPath.item]  // Use filtered data
+        cell.Temp.text = "\(cities[indexPath.row].main.temp)"
+        cell.weatherCondition.text = "\(cities[indexPath.row].clouds)"
+        cell.CityName.text = cities[indexPath.row].name
 
         return cell
     }
@@ -193,10 +185,9 @@ extension CitisWeatherCollection: UICollectionViewDelegate, UICollectionViewData
                        })
 
         // Store selected item name
-        selectedItem = filteredItems[indexPath.item]
-
         // Perform segue to DetailVC
-        performSegue(withIdentifier: "goToDetailPage", sender: self)
+        performSegue(withIdentifier: "goToDetailPage", sender: filteredItems[indexPath.item])
+
     }
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
@@ -207,6 +198,13 @@ extension CitisWeatherCollection: UICollectionViewDelegate, UICollectionViewData
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
         return 10  // Adjust the space between items
     }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "goToDetailPage" {
+                    let destination = segue.destination as! DetailVC
+            destination.lableName = sender as? String ?? "ddododofdnofs"
+                }
+    }
 }
 
 // MARK: - NetworkService Delegation
@@ -214,8 +212,9 @@ extension CitisWeatherCollection: UICollectionViewDelegate, UICollectionViewData
 extension CitisWeatherCollection: NetworkServiceDelegate {
     func didGetWeatherResponse(_ weatherResponse: WeatherResponse) {
        
-        self.items.append(weatherResponse.name)
-        self.filteredItems = self.items
+        self.cities.append(weatherResponse)
+        self.filteredItems = self.cities
+        
         
         DispatchQueue.main.async {
             self.citiesCollectionView.reloadData()
