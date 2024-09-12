@@ -15,6 +15,8 @@ class CitisWeatherCollection: UIViewController {
     @IBOutlet weak var searchCity: UISearchBar!
     @IBOutlet weak var citiesCollectionView: UICollectionView!
     var selectedItem = ""
+    var searchWorkItem: DispatchWorkItem?
+
     
 
     var cities :[WeatherResponse] = []
@@ -24,7 +26,7 @@ class CitisWeatherCollection: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         initalSetup()
-        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addTapped))
+//        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addTapped))
 
     }
 
@@ -53,6 +55,9 @@ class CitisWeatherCollection: UIViewController {
            citiesCollectionView.addGestureRecognizer(longPressGesture)
     }
     
+    
+    // with this function you can delete the collection view cell
+    
     @objc func handleLongPressGesture(_ gesture: UILongPressGestureRecognizer) {
         if gesture.state == .began {
             let location = gesture.location(in: citiesCollectionView)
@@ -62,6 +67,8 @@ class CitisWeatherCollection: UIViewController {
         }
     }
     
+    // this function pop up's the alter box and says that are you sure that you want to delete city
+
     func showDeleteConfirmation(forItemAt indexPath: IndexPath) {
         
         let alert = UIAlertController(title: "Delete City", message: "Are you sure you want to delete this city?", preferredStyle: .alert)
@@ -133,18 +140,23 @@ class CitisWeatherCollection: UIViewController {
 // MARK: - UISearchBarDelegate Extension
 extension CitisWeatherCollection: UISearchBarDelegate {
 
-    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        if searchText.isEmpty {
-            filteredItems = cities
-        } else {
-            
-            filteredItems = cities.filter { $0.name.lowercased().contains(searchText.lowercased()) }
-        }
-        citiesCollectionView.reloadData()
-    }
 
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        searchWorkItem?.cancel()
+        let workItem = DispatchWorkItem {
+            if searchText.isEmpty {
+                self.filteredItems = self.cities
+            } else {
+                self.filteredItems = self.cities.filter { $0.name.lowercased().contains(searchText.lowercased()) }
+            }
+            self.citiesCollectionView.reloadData()
+        }
+        searchWorkItem = workItem
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3, execute: workItem) // Delay by 0.3 seconds
+    }
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         searchBar.text = ""
+        searchBar.resignFirstResponder() // Dismiss keyboard
         filteredItems = cities
         citiesCollectionView.reloadData()
     }
@@ -162,8 +174,6 @@ extension CitisWeatherCollection: UICollectionViewDelegate, UICollectionViewData
         cell.backgroundColor = .gray  // Customize your cell
         cell.layer.borderWidth = 1
         cell.layer.cornerRadius = 23
-        cell.Temp.text = "\(cities[indexPath.row].main.temp)"
-        cell.weatherCondition.text = "\(cities[indexPath.row].clouds)"
         cell.CityName.text = cities[indexPath.row].name
 
         return cell
@@ -186,7 +196,7 @@ extension CitisWeatherCollection: UICollectionViewDelegate, UICollectionViewData
 
         // Store selected item name
         // Perform segue to DetailVC
-        performSegue(withIdentifier: "goToDetailPage", sender: filteredItems[indexPath.item])
+        performSegue(withIdentifier: "goToDetailPage", sender: filteredItems[indexPath.row])
 
     }
 
@@ -201,9 +211,13 @@ extension CitisWeatherCollection: UICollectionViewDelegate, UICollectionViewData
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "goToDetailPage" {
-                    let destination = segue.destination as! DetailVC
-            destination.lableName = sender as? String ?? "ddododofdnofs"
-                }
+            let destination = segue.destination as! DetailVC
+            
+            // Pass the selected `WeatherResponse` object
+            if let weatherResponse = sender as? WeatherResponse {
+                destination.weatherResponse = weatherResponse
+            }
+        }
     }
 }
 
