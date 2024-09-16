@@ -8,14 +8,20 @@
 import UIKit
 
 class ViewController: UIViewController {
+    
+    let objcTableViewController = TableViewControllerObjc()
 
     override func viewDidLoad() {
         super.viewDidLoad()
      
-        NetworkService.shared.delegate = self
-        
-        // Fetch weather data for a city
-        NetworkService.shared.fetchWeatherData(forCity: "Salt Lake City")
+//        NetworkService.shared.delegate = self
+//
+        // Mark: Fetch weather data for a city
+//        NetworkService.shared.fetchWeatherData(forCity: "Salt Lake City")
+        addChild(objcTableViewController)
+               view.addSubview(objcTableViewController.view)
+               objcTableViewController.view.frame = view.bounds
+               objcTableViewController.didMove(toParent: self)
     }
 }
 

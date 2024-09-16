@@ -13,13 +13,14 @@
 		D9851DBA2C82BEE00050CC4F /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9851DB92C82BEE00050CC4F /* ViewController.swift */; };
 		D9851DBF2C82BEE00050CC4F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D9851DBE2C82BEE00050CC4F /* Assets.xcassets */; };
 		D9851DC22C82BEE00050CC4F /* Base in Resources */ = {isa = PBXBuildFile; fileRef = D9851DC12C82BEE00050CC4F /* Base */; };
-		D9851DCC2C82C2770050CC4F /* ViewControllerObjc.m in Sources */ = {isa = PBXBuildFile; fileRef = D9851DCB2C82C2770050CC4F /* ViewControllerObjc.m */; };
+		D9851DCC2C82C2770050CC4F /* TableViewControllerObjc.m in Sources */ = {isa = PBXBuildFile; fileRef = D9851DCB2C82C2770050CC4F /* TableViewControllerObjc.m */; };
 		D9851DD42C842CAE0050CC4F /* CitisWeatherCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9851DD32C842CAE0050CC4F /* CitisWeatherCollection.swift */; };
 		D9851DD72C842F4B0050CC4F /* CollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9851DD62C842F4B0050CC4F /* CollectionViewCell.swift */; };
 		D9851DD92C85489B0050CC4F /* DetailVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9851DD82C85489B0050CC4F /* DetailVC.swift */; };
 		D9851DDA2C8568C90050CC4F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D9851DBB2C82BEE00050CC4F /* Main.storyboard */; };
 		D9851DDD2C869B230050CC4F /* WeatherMainModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9851DDC2C869B230050CC4F /* WeatherMainModel.swift */; };
 		D9851DDF2C869B900050CC4F /* NetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9851DDE2C869B900050CC4F /* NetworkService.swift */; };
+		D9ED0F882C98C42200F196B5 /* CityTempCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D9ED0F872C98C42200F196B5 /* CityTempCell.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -33,13 +34,15 @@
 		D9851DC12C82BEE00050CC4F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		D9851DC32C82BEE00050CC4F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D9851DC92C82C2760050CC4F /* AssignmentOne-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "AssignmentOne-Bridging-Header.h"; sourceTree = "<group>"; };
-		D9851DCA2C82C2770050CC4F /* ViewControllerObjc.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewControllerObjc.h; sourceTree = "<group>"; };
-		D9851DCB2C82C2770050CC4F /* ViewControllerObjc.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewControllerObjc.m; sourceTree = "<group>"; };
+		D9851DCA2C82C2770050CC4F /* TableViewControllerObjc.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TableViewControllerObjc.h; sourceTree = "<group>"; };
+		D9851DCB2C82C2770050CC4F /* TableViewControllerObjc.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TableViewControllerObjc.m; sourceTree = "<group>"; };
 		D9851DD32C842CAE0050CC4F /* CitisWeatherCollection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CitisWeatherCollection.swift; sourceTree = "<group>"; };
 		D9851DD62C842F4B0050CC4F /* CollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionViewCell.swift; sourceTree = "<group>"; };
 		D9851DD82C85489B0050CC4F /* DetailVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailVC.swift; sourceTree = "<group>"; };
 		D9851DDC2C869B230050CC4F /* WeatherMainModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherMainModel.swift; sourceTree = "<group>"; };
 		D9851DDE2C869B900050CC4F /* NetworkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkService.swift; sourceTree = "<group>"; };
+		D9ED0F862C98C42200F196B5 /* CityTempCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CityTempCell.h; sourceTree = "<group>"; };
+		D9ED0F872C98C42200F196B5 /* CityTempCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CityTempCell.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -83,8 +86,10 @@
 				D9851DBE2C82BEE00050CC4F /* Assets.xcassets */,
 				D9851DC02C82BEE00050CC4F /* LaunchScreen.storyboard */,
 				D9851DC32C82BEE00050CC4F /* Info.plist */,
-				D9851DCA2C82C2770050CC4F /* ViewControllerObjc.h */,
-				D9851DCB2C82C2770050CC4F /* ViewControllerObjc.m */,
+				D9ED0F862C98C42200F196B5 /* CityTempCell.h */,
+				D9ED0F872C98C42200F196B5 /* CityTempCell.m */,
+				D9851DCA2C82C2770050CC4F /* TableViewControllerObjc.h */,
+				D9851DCB2C82C2770050CC4F /* TableViewControllerObjc.m */,
 				D9851DC92C82C2760050CC4F /* AssignmentOne-Bridging-Header.h */,
 			);
 			path = AssignmentOne;
@@ -220,7 +225,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D9851DCC2C82C2770050CC4F /* ViewControllerObjc.m in Sources */,
+				D9851DCC2C82C2770050CC4F /* TableViewControllerObjc.m in Sources */,
 				D9851DBA2C82BEE00050CC4F /* ViewController.swift in Sources */,
 				D9851DD72C842F4B0050CC4F /* CollectionViewCell.swift in Sources */,
 				D95B4D982C9213FB0076A176 /* weatherDetailModel.swift in Sources */,
@@ -229,6 +234,7 @@
 				D9851DB82C82BEE00050CC4F /* SceneDelegate.swift in Sources */,
 				D9851DD92C85489B0050CC4F /* DetailVC.swift in Sources */,
 				D9851DDD2C869B230050CC4F /* WeatherMainModel.swift in Sources */,
+				D9ED0F882C98C42200F196B5 /* CityTempCell.m in Sources */,
 				D9851DDF2C869B900050CC4F /* NetworkService.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

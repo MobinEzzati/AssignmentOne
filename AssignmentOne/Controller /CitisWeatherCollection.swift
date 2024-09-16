@@ -14,8 +14,15 @@ class CitisWeatherCollection: UIViewController {
 
     @IBOutlet weak var searchCity: UISearchBar!
     @IBOutlet weak var citiesCollectionView: UICollectionView!
+    
+    
+    
+    @IBOutlet weak var TableViewContainer: UIView!
+    @IBOutlet weak var segmentedController: UISegmentedControl!
     var selectedItem = ""
     var searchWorkItem: DispatchWorkItem?
+    
+    let objcTableViewController = TableViewControllerObjc()
 
     
 
@@ -26,8 +33,14 @@ class CitisWeatherCollection: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         initalSetup()
-//        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addTapped))
+        
 
+    }
+    func getFavoriteItemInex(cell:CollectionViewCell){
+        
+        print("click on favorite star")
+        let indexPathTapped = citiesCollectionView.indexPath(for: cell)
+        print(indexPathTapped ?? 0)
     }
 
     func initalSetup() {
@@ -35,12 +48,12 @@ class CitisWeatherCollection: UIViewController {
         filteredItems = cities
         
 
-
         // Setup the collection view
         citiesCollectionView.delegate = self
         citiesCollectionView.dataSource = self
         citiesCollectionView.collectionViewLayout = UICollectionViewFlowLayout()
         citiesCollectionView.register(UICollectionReusableView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "header")
+        
 
         // Setup the search bar
         searchCity.placeholder = "Search for a city"
@@ -48,12 +61,60 @@ class CitisWeatherCollection: UIViewController {
         searchCity.layer.borderWidth = 1
         searchCity.layer.borderColor = UIColor.clear.cgColor
         
+//        
+//             addChild(tableViewController)
+//             view.addSubview(tableViewController.view)
+//             tableViewController.view.frame = view.bounds
+//             tableViewController.didMove(toParent: self)
+       
+        
+        
+        
+        //Setup SegmentedController
+        segmentedController.addTarget(self, action: #selector(segmentChanged(_:)), for: .valueChanged)
+
+        
+        
+        
         // setup Network delegation
         NetworkService.shared.delegate = self
         
         let longPressGesture = UILongPressGestureRecognizer(target: self, action: #selector(handleLongPressGesture(_:)))
            citiesCollectionView.addGestureRecognizer(longPressGesture)
     }
+    
+    
+
+    @objc func segmentChanged(_ sender: UISegmentedControl) {
+        switch sender.selectedSegmentIndex {
+        case 0:
+            // Show the Objective-C table view controller's view
+            if objcTableViewController.view.superview == nil {
+                addChild(objcTableViewController)
+                TableViewContainer.addSubview(objcTableViewController.view)
+                objcTableViewController.view.frame = TableViewContainer.bounds
+                objcTableViewController.didMove(toParent: self)
+            }
+            objcTableViewController.view.isHidden = false
+            TableViewContainer.isHidden = false
+            citiesCollectionView.isHidden = true
+
+        case 1:
+            // Hide the Objective-C table view controller's view
+            objcTableViewController.view.isHidden = true
+            TableViewContainer.isHidden = true
+            citiesCollectionView.isHidden = false
+            citiesCollectionView.frame = view.bounds
+            citiesCollectionView.isUserInteractionEnabled = true
+            citiesCollectionView.allowsSelection = true
+
+
+
+        default:
+            break
+        }
+    }
+
     
     
     // with this function you can delete the collection view cell
@@ -66,6 +127,10 @@ class CitisWeatherCollection: UIViewController {
             }
         }
     }
+    
+    
+    // this function will put seleceted city from all collection view to favorite tableView
+    
     
     // this function pop up's the alter box and says that are you sure that you want to delete city
 
@@ -89,27 +154,13 @@ class CitisWeatherCollection: UIViewController {
         
         present(alert, animated: true, completion: nil)
     }
-    
 
-    @objc func addTapped() {
-        // Your add functionality here, for example, showing an alert to input a new city
-        let alert = UIAlertController(title: "Add City", message: "Enter the name of the city", preferredStyle: .alert)
-          alert.addTextField { textField in
-              textField.placeholder = "City name"
-          }
-          let addAction = UIAlertAction(title: "Add", style: .default) { _ in
-              if let cityName = alert.textFields?.first?.text, !cityName.isEmpty {
-                  self.filteredItems = self.cities
-                  self.citiesCollectionView.reloadData()
-              }
-          }
-          let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
-          alert.addAction(addAction)
-          alert.addAction(cancelAction)
-          present(alert, animated: true, completion: nil)
-    }
-    
     @IBAction func addCity(_ sender: Any) {
+        
+        self.objcTableViewController.view.isHidden = true
+        self.TableViewContainer.isHidden = true
+        self.segmentedController.selectedSegmentIndex = 1
+       
         
         let alert = UIAlertController(title: "Add City", message: "Enter the name of the city", preferredStyle: .alert)
           alert.addTextField { textField in
@@ -120,18 +171,13 @@ class CitisWeatherCollection: UIViewController {
                   NetworkService.shared.fetchWeatherData(forCity: cityName)
 
               }
+              
+             
           }
           let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
           alert.addAction(addAction)
           alert.addAction(cancelAction)
           present(alert, animated: true, completion: nil)
-        
-//        if let city = searchCity.text {
-//            
-//
-//            
-//        }
-//        
 
     }
     
@@ -163,7 +209,47 @@ extension CitisWeatherCollection: UISearchBarDelegate {
 }
 
 // MARK: - UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout Extension
-extension CitisWeatherCollection: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+extension CitisWeatherCollection: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, CollectionViewCellDelegate {
+    
+    func removeFromFavList(at index: IndexPath) {
+        print("removeSectionClicked")
+
+        // Check if index is valid and within bounds
+        if index.row < objcTableViewController.dataArray.count {
+            // Remove the item from the dataArray
+            objcTableViewController.dataArray.removeObject(at: index.row) // NSMutableArray method
+            
+            // Reload the tableView to reflect changes
+            objcTableViewController.tableView.reloadData()
+        } else {
+            print("Index out of bounds")
+        }
+    }
+
+    
+    func didTapFavoriteButton(at index: IndexPath) {
+        print("addclicked")
+        let currentItem = cities[index.row]
+              let newCityWeather: [String: String] = [
+                "city": "\(currentItem.name)",  // Example data
+                "temp": "\(currentItem.main.temp)",
+                "max": "\(currentItem.main.tempMax)",
+                "min": "\(currentItem.main.tempMin)"
+              ]
+              
+              // Cast dataArray to NSMutableArray to allow modification
+        if let objcDataArray = objcTableViewController.dataArray {
+                   objcDataArray.add(newCityWeather)  // Add the new city weather data
+                   objcTableViewController.tableView.reloadData()  // Reload table to reflect changes
+               } else {
+                   print("Failed to cast dataArray to NSMutableArray")
+               }
+              
+              // Reload the table view in case you want to see the updated data
+              objcTableViewController.tableView.reloadData()
+        
+    }
+    
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return cities.count
@@ -174,6 +260,8 @@ extension CitisWeatherCollection: UICollectionViewDelegate, UICollectionViewData
         cell.backgroundColor = .gray  // Customize your cell
         cell.layer.borderWidth = 1
         cell.layer.cornerRadius = 23
+        cell.delegate = self 
+        cell.indexPath = indexPath
         cell.CityName.text = cities[indexPath.row].name
 
         return cell
@@ -230,6 +318,9 @@ extension CitisWeatherCollection: NetworkServiceDelegate {
         self.filteredItems = self.cities
         
         
+        
+        
+        
         DispatchQueue.main.async {
             self.citiesCollectionView.reloadData()
 
@@ -244,6 +335,7 @@ extension CitisWeatherCollection: NetworkServiceDelegate {
     
     
 }
+
 
 
 
