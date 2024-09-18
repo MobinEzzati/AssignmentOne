@@ -17,12 +17,16 @@
     // Initialize the data source with dictionaries for city names and temperature data
     self.dataArray = [[NSMutableArray alloc] init];
 
+    // Sample data for cities (this can be replaced by real data)
+
     // Initialize and set up the table view
     self.tableView = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStylePlain];
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
+    self.tableView.rowHeight = UITableViewAutomaticDimension;
+    self.tableView.estimatedRowHeight = 60;
     
-    // Register the custom cell class with a different identifier
+    // Register the custom cell classes with different identifiers
     [self.tableView registerClass:[CityTempCell class] forCellReuseIdentifier:@"CityTempCell"];
     [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"CityMaxMinCell"];
     [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"CityCustomFontCell"];
@@ -50,6 +54,7 @@
         // Configure the cityTempCell
         cityTempCell.cityLabel.text = cityData[@"city"];
         cityTempCell.tempLabel.text = cityData[@"temp"];
+        cityTempCell.backgroundColor = [UIColor redColor];
         
         return cityTempCell;
         

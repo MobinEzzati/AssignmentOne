@@ -25,17 +25,9 @@ class DetailVC: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         setup()
-
-        
-    
     }
     
-    
-    
-    
-
     func setup() {
         
         if let weather = weatherResponse {
@@ -62,6 +54,7 @@ extension DetailVC: UIScrollViewDelegate {
         
     }
 }
+
 
 
 
