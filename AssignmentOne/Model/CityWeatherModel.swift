@@ -6,7 +6,12 @@
 //
 
 import Foundation
+import UnsplashPhotoPicker
 
+enum SelectionType: Int {
+    case single
+    case multiple
+}
 protocol ControllerServiceDelegate: AnyObject {
     func didReceiveItems(_ items: WeatherResponse)
     func didFailWithError(_ error: Error)
@@ -17,15 +22,34 @@ class CityWeatherModel: NetworkServiceDelegate {
     
     private var cities: [WeatherResponse] = []
     weak var delegate: ControllerServiceDelegate?
+    private var photos = [UnsplashPhoto]()
     
     init() {
         NetworkService.shared.delegate = self // Set the model as the delegate for the network service
         
+//        let configuration = UnsplashPhotoPickerConfiguration(
+//                    accessKey: "r7ICKmr1RBEdfhR1DcX5ZpYL0Qt4oua9DjgBXIe-Fx4",
+//                    secretKey: "UAPk5AxpaYUQdiKgj9mtZfJceY1IJU8A_pfvUxubmfI",
+//                    query: "Dallas",
+//                    allowsMultipleSelection: (SelectionType.single.rawValue != 0)
+//                )
+//        
+//        let unsplashPhotoPicker = UnsplashPhotoPicker(configuration: configuration)
+//            unsplashPhotoPicker.photoPickerDelegate = self
     }
+    
+    
     
     // Add city to the list
     func addCity(_ city: WeatherResponse) {
         cities.append(city)
+    }
+    
+    func getCityImage(cityName: String) {
+        print("this is get city")
+    
+        
+        
     }
     
     // Fetch weather data for a city
@@ -99,3 +123,4 @@ class CityWeatherModel: NetworkServiceDelegate {
 
     }
 }
+

@@ -6,11 +6,14 @@
 //
 
 import UIKit
+import UnsplashPhotoPicker
 
 
 
 
 class CitisWeatherCollection: UIViewController {
+    
+    
 
     @IBOutlet weak var searchCity: UISearchBar!
     @IBOutlet weak var citiesCollectionView: UICollectionView!
@@ -27,12 +30,17 @@ class CitisWeatherCollection: UIViewController {
     let objcTableViewController = TableViewControllerObjc()
     var cities :[WeatherResponse] = []
     var filteredItems: [WeatherResponse] = []
+    private var photos = [UnsplashPhoto]()
+    var unsplashImageView: UIImageView!
     
     
 
     override func viewDidLoad() {
         super.viewDidLoad()
         initalSetup()
+        
+   
+
     }
     
     
@@ -46,10 +54,11 @@ class CitisWeatherCollection: UIViewController {
         print(indexPathTapped ?? 0)
     }
 
+
     func initalSetup() {
         // Initialize filtered items
         filteredItems = cityWeatherModel.getCities()
-        
+        cityWeatherModel.getCityImage(cityName: "dallas")
 
         // Setup the collection view
         citiesCollectionView.delegate = self
@@ -80,6 +89,11 @@ class CitisWeatherCollection: UIViewController {
         
         let longPressGesture = UILongPressGestureRecognizer(target: self, action: #selector(handleLongPressGesture(_:)))
            citiesCollectionView.addGestureRecognizer(longPressGesture)
+        
+        
+ 
+
+        
     }
     
     
@@ -335,7 +349,7 @@ extension CitisWeatherCollection: UICollectionViewDelegate, UICollectionViewData
             
             // Pass the selected `WeatherResponse` object
             if let weatherResponse = sender as? WeatherResponse {
-                destination.weatherResponse = weatherResponse
+                destination.cityWeather = weatherResponse
             }
         }
     }
@@ -365,6 +379,79 @@ extension CitisWeatherCollection : ControllerServiceDelegate {
        }
     
 }
+
+extension CitisWeatherCollection: UnsplashPhotoPickerDelegate {
+    func unsplashPhotoPicker(_ photoPicker: UnsplashPhotoPicker, didSelectPhotos photos: [UnsplashPhoto]) {
+        print("Unsplash photo picker did select \(photos.count) photo(s)")
+        
+        // Assuming we want the first selected photo (you can modify this for multiple selections)
+        guard let firstPhoto = photos.first else { return }
+
+        // Get the URL for the first available photo size (e.g., small, regular, full)
+        guard let imageUrl = firstPhoto.urls.values.first else {
+            print("No valid URL found for the photo.")
+            return
+        }
+
+        // Convert URL to a String and download the image from the URL
+        URLSession.shared.dataTask(with: imageUrl) { [weak self] data, response, error in
+            if let error = error {
+                print("Failed to download image: \(error)")
+                return
+            }
+
+            // Ensure the response contains data
+            if let data = data, let image = UIImage(data: data) {
+                DispatchQueue.main.async {
+                    // Set the downloaded image to the UIImageView
+//                    self?.cityImage.image = image
+                }
+            }
+        }.resume()
+    }
+
+    func unsplashPhotoPickerDidCancel(_ photoPicker: UnsplashPhotoPicker) {
+        print("Unsplash photo picker did cancel")
+    }
+}
+
+
+
+//extension CitisWeatherCollection: UnsplashPhotoPickerDelegate {
+//    func unsplashPhotoPicker(_ photoPicker: UnsplashPhotoPicker, didSelectPhotos photos: [UnsplashPhoto]) {
+//        print("Unsplash photo picker did select \(photos.count) photo(s)")
+//        
+//        // Assuming we want the first selected photo (you can modify this for multiple selections)
+//        guard let firstPhoto = photos.first else { return }
+//
+//        // Get the URL for the first available photo size (e.g., small, regular, full)
+//        guard let imageUrl = firstPhoto.urls.values.first else {
+//            print("No valid URL found for the photo.")
+//            return
+//        }
+//
+//        // Convert URL to a String and download the image from the URL
+//        URLSession.shared.dataTask(with: imageUrl) { [weak self] data, response, error in
+//            if let error = error {
+//                print("Failed to download image: \(error)")
+//                return
+//            }
+//
+//            // Ensure the response contains data
+//            if let data = data, let image = UIImage(data: data) {
+//                DispatchQueue.main.async {
+//                    // Set the downloaded image to the UIImageView
+//                    self?.unsplashImageView.image = image
+//                }
+//            }
+//        }.resume()
+//    }
+//
+//    func unsplashPhotoPickerDidCancel(_ photoPicker: UnsplashPhotoPicker) {
+//        print("Unsplash photo picker did cancel")
+//    }
+//}
+
 
 
 //

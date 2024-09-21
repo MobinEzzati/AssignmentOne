@@ -21,6 +21,7 @@
 		D9851DDD2C869B230050CC4F /* WeatherMainModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9851DDC2C869B230050CC4F /* WeatherMainModel.swift */; };
 		D9851DDF2C869B900050CC4F /* NetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9851DDE2C869B900050CC4F /* NetworkService.swift */; };
 		D9ED00D92C996361002C74AC /* CityWeatherModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9ED00D82C996361002C74AC /* CityWeatherModel.swift */; };
+		D9ED00DC2C9B9F27002C74AC /* UnsplashPhotoPicker in Frameworks */ = {isa = PBXBuildFile; productRef = D9ED00DB2C9B9F27002C74AC /* UnsplashPhotoPicker */; };
 		D9ED0F882C98C42200F196B5 /* CityTempCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D9ED0F872C98C42200F196B5 /* CityTempCell.m */; };
 /* End PBXBuildFile section */
 
@@ -52,6 +53,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D9ED00DC2C9B9F27002C74AC /* UnsplashPhotoPicker in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -172,6 +174,9 @@
 			dependencies = (
 			);
 			name = AssignmentOne;
+			packageProductDependencies = (
+				D9ED00DB2C9B9F27002C74AC /* UnsplashPhotoPicker */,
+			);
 			productName = AssignmentOne;
 			productReference = D9851DB22C82BEE00050CC4F /* AssignmentOne.app */;
 			productType = "com.apple.product-type.application";
@@ -201,6 +206,9 @@
 				Base,
 			);
 			mainGroup = D9851DA92C82BEE00050CC4F;
+			packageReferences = (
+				D9ED00DA2C9B9F27002C74AC /* XCRemoteSwiftPackageReference "unsplash-photopicker-ios" */,
+			);
 			productRefGroup = D9851DB32C82BEE00050CC4F /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -467,6 +475,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		D9ED00DA2C9B9F27002C74AC /* XCRemoteSwiftPackageReference "unsplash-photopicker-ios" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/unsplash/unsplash-photopicker-ios.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.3.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		D9ED00DB2C9B9F27002C74AC /* UnsplashPhotoPicker */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = D9ED00DA2C9B9F27002C74AC /* XCRemoteSwiftPackageReference "unsplash-photopicker-ios" */;
+			productName = UnsplashPhotoPicker;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = D9851DAA2C82BEE00050CC4F /* Project object */;
 }

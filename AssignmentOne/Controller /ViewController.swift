@@ -22,6 +22,8 @@ class ViewController: UIViewController {
                view.addSubview(objcTableViewController.view)
                objcTableViewController.view.frame = view.bounds
                objcTableViewController.didMove(toParent: self)
+        
+        
     }
 }
 
