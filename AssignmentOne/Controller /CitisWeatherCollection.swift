@@ -24,7 +24,11 @@ class CitisWeatherCollection: UIViewController {
     @IBOutlet weak var segmentedController: UISegmentedControl!
     var selectedItem = ""
     var searchWorkItem: DispatchWorkItem?
-    var cityWeatherModel = CityWeatherModel()
+    lazy var cityWeatherModel: CityWeatherModel = {
+          let model = CityWeatherModel()
+          model.delegate = self  // Set delegate if needed
+          return model
+      }()
     
     
     let objcTableViewController = TableViewControllerObjc()
