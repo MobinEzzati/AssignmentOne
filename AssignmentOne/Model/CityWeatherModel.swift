@@ -27,15 +27,7 @@ class CityWeatherModel: NetworkServiceDelegate {
     init() {
         NetworkService.shared.delegate = self // Set the model as the delegate for the network service
         
-//        let configuration = UnsplashPhotoPickerConfiguration(
-//                    accessKey: "r7ICKmr1RBEdfhR1DcX5ZpYL0Qt4oua9DjgBXIe-Fx4",
-//                    secretKey: "UAPk5AxpaYUQdiKgj9mtZfJceY1IJU8A_pfvUxubmfI",
-//                    query: "Dallas",
-//                    allowsMultipleSelection: (SelectionType.single.rawValue != 0)
-//                )
-//        
-//        let unsplashPhotoPicker = UnsplashPhotoPicker(configuration: configuration)
-//            unsplashPhotoPicker.photoPickerDelegate = self
+
     }
     
     

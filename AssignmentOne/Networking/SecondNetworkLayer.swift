@@ -1,29 +1,28 @@
 //
-//  NetworkingFile.swift
+//  SecondNetworkLayer.swift
 //  AssignmentOne
 //
-//  Created by Mobin  Ezzati  on 9/2/24.
+//  Created by Mobin  Ezzati  on 9/22/24.
 //
-
 
 import Foundation
 // Protocol for handling weather response and errors
-protocol NetworkServiceDelegate: AnyObject {
+protocol SecondNetworkLayerDelegate: AnyObject {
     func didGetWeatherResponse(_ weatherResponse: WeatherResponse)
     func didFailWithError(_ error: Error)
 }
 
-class NetworkService {
+class SecondNetworkLayer {
     
     // The delegate that will be notified about the result of the network call
-    weak var delegate: NetworkServiceDelegate? {
+    weak var delegate: SecondNetworkLayerDelegate? {
          didSet {
              print("Delegate set to: \(String(describing: delegate))")
          }
      }
     
     // Singleton instance for ease of use across the app
-    static let shared = NetworkService()
+    static let shared = SecondNetworkLayer()
     
     // Base URL for the OpenWeatherMap API
     private let baseURL = "https://api.openweathermap.org/data/2.5/weather"
@@ -104,5 +103,6 @@ class NetworkService {
     }
     
 }
+
 
 

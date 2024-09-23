@@ -38,13 +38,16 @@ class CitisWeatherCollection: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         initalSetup()
-        
-   
+        cityWeatherModel = CityWeatherModel()
 
     }
     
     
-    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        cityWeatherModel.delegate = self
+         print("Delegate reassigned to CitisWeatherCollection: \(cityWeatherModel.delegate)")
+    }
     
     
     func getFavoriteItemInex(cell:CollectionViewCell){
@@ -345,6 +348,9 @@ extension CitisWeatherCollection: UICollectionViewDelegate, UICollectionViewData
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "goToDetailPage" {
+            
+            cityWeatherModel.delegate = self
+
             let destination = segue.destination as! DetailVC
             
             // Pass the selected `WeatherResponse` object
@@ -379,115 +385,6 @@ extension CitisWeatherCollection : ControllerServiceDelegate {
        }
     
 }
-
-extension CitisWeatherCollection: UnsplashPhotoPickerDelegate {
-    func unsplashPhotoPicker(_ photoPicker: UnsplashPhotoPicker, didSelectPhotos photos: [UnsplashPhoto]) {
-        print("Unsplash photo picker did select \(photos.count) photo(s)")
-        
-        // Assuming we want the first selected photo (you can modify this for multiple selections)
-        guard let firstPhoto = photos.first else { return }
-
-        // Get the URL for the first available photo size (e.g., small, regular, full)
-        guard let imageUrl = firstPhoto.urls.values.first else {
-            print("No valid URL found for the photo.")
-            return
-        }
-
-        // Convert URL to a String and download the image from the URL
-        URLSession.shared.dataTask(with: imageUrl) { [weak self] data, response, error in
-            if let error = error {
-                print("Failed to download image: \(error)")
-                return
-            }
-
-            // Ensure the response contains data
-            if let data = data, let image = UIImage(data: data) {
-                DispatchQueue.main.async {
-                    // Set the downloaded image to the UIImageView
-//                    self?.cityImage.image = image
-                }
-            }
-        }.resume()
-    }
-
-    func unsplashPhotoPickerDidCancel(_ photoPicker: UnsplashPhotoPicker) {
-        print("Unsplash photo picker did cancel")
-    }
-}
-
-
-
-//extension CitisWeatherCollection: UnsplashPhotoPickerDelegate {
-//    func unsplashPhotoPicker(_ photoPicker: UnsplashPhotoPicker, didSelectPhotos photos: [UnsplashPhoto]) {
-//        print("Unsplash photo picker did select \(photos.count) photo(s)")
-//        
-//        // Assuming we want the first selected photo (you can modify this for multiple selections)
-//        guard let firstPhoto = photos.first else { return }
-//
-//        // Get the URL for the first available photo size (e.g., small, regular, full)
-//        guard let imageUrl = firstPhoto.urls.values.first else {
-//            print("No valid URL found for the photo.")
-//            return
-//        }
-//
-//        // Convert URL to a String and download the image from the URL
-//        URLSession.shared.dataTask(with: imageUrl) { [weak self] data, response, error in
-//            if let error = error {
-//                print("Failed to download image: \(error)")
-//                return
-//            }
-//
-//            // Ensure the response contains data
-//            if let data = data, let image = UIImage(data: data) {
-//                DispatchQueue.main.async {
-//                    // Set the downloaded image to the UIImageView
-//                    self?.unsplashImageView.image = image
-//                }
-//            }
-//        }.resume()
-//    }
-//
-//    func unsplashPhotoPickerDidCancel(_ photoPicker: UnsplashPhotoPicker) {
-//        print("Unsplash photo picker did cancel")
-//    }
-//}
-
-
-
-//
-//extension CitisWeatherCollection: NetworkServiceDelegate {
-//    func didGetWeatherResponse(_ weatherResponse: WeatherResponse) {
-//       
-//        cityWeatherModel.addCity(weatherResponse)
-//        
-//        
-//        
-//        self.filteredItems = cityWeatherModel.getCities()
-//        
-//        
-//        
-//        
-//        
-//        DispatchQueue.main.async {
-//            self.citiesCollectionView.reloadData()
-//
-//        }
-//    
-//    }
-//    
-//    func didFailWithError(_ error: any Error) {
-//        print(error.localizedDescription)
-//
-//    }
-//    
-//    
-//}
-
-
-
-
-
-
 
 
 
